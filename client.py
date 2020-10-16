@@ -1,4 +1,4 @@
-#!/usr/bin/python2.5
+#!/usr/bin/python3
 import pyglet as p
 import random
 #import math
@@ -44,7 +44,7 @@ class Tile(object):
         if (self._noise is None):
             random.seed(self._x + self._y)
             self._noise = random.randint(0, 100)
-            print 'noise: ', self._noise
+            print ('noise: ', self._noise)
         return self._noise
 
     @property
@@ -57,15 +57,15 @@ class Tile(object):
                 v = [grid[(co[0] + dx, co[1] + dy)].noise
                      for dy in [0, 10]
                      for dx in [0, 10]]
-                print 'v', v, 'co', co, 'selfxy', self._x, self._y
+                print ('v', v, 'co', co, 'selfxy', self._x, self._y)
                 v = [v[0] * (10 - self._x % 10) / 10 +
                      v[1] * (self._x % 10) / 10,
                      v[2] * (10 - self._x % 10) / 10 +
                      v[3] * (self._x % 10) / 10]
-                print v
+                print (v)
                 tval = v[0] * (10 - self._y % 10) / 10 + \
                     v[1] * (self._y % 10) / 10
-            print tval
+            print (tval)
             self._type = tval / 50
         return self._type
 
@@ -126,8 +126,8 @@ class HexagonClient(p.window.Window):
                   self.tile_size[a] -
                   self.screen_pos[a] for a in range(2)]
             if tile.coordinate[0] % 2 == 1:
-                co[1] -= self.tile_size[1] / 2
-            self.hexagons[tile.type].blit(*co)
+                co[1] -= (self.tile_size[1] / 2)
+            self.hexagons[int(tile.type)].blit(*co)
 
             #self.co_label.text = "%i, %i" % tile.coordinate
             #self.co_label.x = co[0]
@@ -140,12 +140,12 @@ class HexagonClient(p.window.Window):
     def visibleTileRange(self):
         """returns the bottomleft and topright visible tiles"""
         return (
-            tuple((self.map_pos[a] +
+            tuple((int(self.map_pos[a] +
                    (self.screen_pos[a]) /
-                   self.tile_size[a] for a in range(2))),
-            tuple((self.map_pos[a] +
+                   self.tile_size[a]) for a in range(2))),
+            tuple((int(self.map_pos[a] +
                    (self.screen_pos[a] + self.client_window_size[a]) /
-                   self.tile_size[a] for a in range(2)))
+                   self.tile_size[a]) for a in range(2)))
         )
 
 
